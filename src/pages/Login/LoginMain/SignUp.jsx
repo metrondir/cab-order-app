@@ -84,7 +84,7 @@ const SignUp = ({ handleResponse }) => {
         }
         try{
             // Register With node-server & mongodb
-            const data = await axios.post(process.env.REACT_APP_GOOGLE_API_KEY+'/user/register', registerInfo)
+            const data = await axios.post(process.env.REACT_APP_BASE_SERVER_URL+'/user/register', registerInfo)
             setLoading(false);
             swal({
                 icon:'success',

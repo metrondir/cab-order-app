@@ -24,7 +24,7 @@ const SignIn = ({ handleResponse }) => {
 	const onSubmit = async (event) => {
 		 dispatch({ type: "LOGIN_START" })
 		 try {
-			  const res = await axios.post(process.env.REACT_APP_GOOGLE_API_KEY+'/user/login', event);
+			  const res = await axios.post(process.env.REACT_APP_BASE_SERVER_URL+'/user/login', event);
 			  const accessToken = res.data.accessToken;
 			  const refreshToken = res.data.refreshToken;
 			  console.log(accessToken);
