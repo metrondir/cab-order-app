@@ -1,0 +1,10 @@
+.overlayblock{
+	padding: 0.5rem;
+	background-color: white;
+	font-weight: bold;
+	display: inline-block;
+}
+.overlayblock p{
+	color: black;
+	font-size: 16px;
+}

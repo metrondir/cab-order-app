@@ -1,29 +1,15 @@
 import React, { useState } from 'react';
-
 import { FaTimes } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-
 import log from '../../../images/info.svg';
 import register from '../../../images/register.svg';
 import SignIn from './SignIn';
 import './SignInForm.css';
 import SignUp from './SignUp';
 
-
-
 const SignInForm = () => {
     const [isSignUp, setSignUp] = useState(false);
-    
-    // const [loggedInUser, setLoggedInUser] = useContext(UserContext)
-    // const history = useNavigate();
-    // const location = useLocation();
-
     const handleResponse = (res) => {
-        // setLoggedInUser(res);
-        // if (!res.error) {
-        //     toast.success("Successfully Sign in")
-        //     history.replace(from)
-        // }
     }
 
     return (
@@ -58,7 +44,6 @@ const SignInForm = () => {
             </div>
         </div>
     </div>
-    
 
     );
 };

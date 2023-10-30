@@ -1,53 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-
+import React, { useEffect, useState , useContext} from 'react';
+import { GoogleMap, useJsApiLoader, MarkerF, OverlayViewF, DirectionsRenderer } from '@react-google-maps/api';
+import { SourceContext } from '../../Context/SourceContext';
+import { DestinationContext } from '../../Context/DestinationContext';
+import './Home.css'
 function GoogleMapSection() {
   const containerStyle = {
     width: '100%',
-    height: window.innerWidth * 0.5,
+    height: window.innerWidth * 0.4,
   };
+  const google = window.google
+  //const { isLoaded } = useJsApiLoader({
+  //  id: 'google-map-script',
+  //  googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY, // Replace with your Google Maps API key
+  //});
+	const{source,setSource}=useContext(SourceContext);
+	const{destination,setDestination}=useContext(DestinationContext);
+  const [directionRoutePoints,setDirectionRoutePoints]=useState();
 
-  const { isLoaded } = useJsApiLoader({
-    id: '6bc5b02e6889cd76',
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+  const [center, setCenter] = useState({
+    lat: -3.745,
+    lng: -38.523
   });
-
   const [map, setMap] = React.useState(null);
-  const [center, setCenter] = useState(null);
   const [myLocationMarker, setMyLocationMarker] = useState(null);
-
-  useEffect(() => {
-    // Get the user's location using the Geolocation API
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        setCenter(userLocation);
-
-        // Set a closer initial zoom level (adjust the value as needed)
-        const initialZoom = 15;
-
-        if (map) {
-          map.setCenter(userLocation);
-          map.setZoom(initialZoom);
-
-          // Create a marker for the user's location
-          if (!myLocationMarker) {
-            const marker = new window.google.maps.Marker({
-              position: userLocation,
-              map: map,
-              title: 'My Location',
-            });
-            setMyLocationMarker(marker);
-          }
-        }
-      });
+  useEffect(()=>{
+    if(source?.length!=[]&&map)
+    {
+      map.panTo({
+        lat:source.lat,
+        lng:source.lng
+      })
+      setCenter({
+        lat:source.lat,
+        lng:source.lng
+      })
     }
-  }, [map]);
+    if(source.length!=[]&&destination.length!=[]){
+      directionRoute();
+  }
+  },[source])
 
+  useEffect(()=>{
+    if(destination?.length!=[]&&map)
+    {
+      setCenter({
+        lat:destination.lat,
+        lng:destination.lng
+      })
+    }
+    if(source.length!=[]&&destination.length!=[]){
+        directionRoute();
+    }
+  },[destination])
+  const directionRoute = () => {
+    const DirectionsService = new google.maps.DirectionsService();
+  
+    DirectionsService.route({
+      destination: { lat: destination.lat, lng: destination.lng },
+      origin: { lat: source.lat, lng: source.lng },
+      travelMode: google.maps.TravelMode.DRIVING,
+    }, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        setDirectionRoutePoints(result);
+       
+      } else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
+        console.error('No driving directions available for this route.');
+      } else {
+        console.error('Error:', status);
+      } 
+    });
+  };
   const onLoad = React.useCallback(function callback(map) {
+    const bounds = new google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
     setMap(map);
 
     // Add event listener to disable Ctrl + scroll for zoom
@@ -61,23 +86,68 @@ function GoogleMapSection() {
     setMap(null);
   }, []);
 
-  return isLoaded ? (
+  return (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={center || { lat: -3.745, lng: -38.523 }} // Fallback to a default location if user location not available
-      zoom={4}
-      onLoad={onLoad}
+      zoom={7}
+      onLoad={map=>setMap(map)}
       onUnmount={onUnmount}
-      options={{
-        mapId: '6bc5b02e6889cd76',
-		  
-      }}
+      options={{mapId:'6bc5b02e6889cd76'}}
     >
-      {myLocationMarker && <Marker position={myLocationMarker.getPosition()} />}
-      {/* Child components, such as markers, info windows, etc. */}
-      <></>
+
+      {source.length!=[]?<MarkerF
+      position={{lat:source.lat,lng:source.lng}}
+      icon={{
+        url:"/source.svg",
+        scaledSize:{
+          width:40,
+          height:40,
+        }
+      }}
+      >
+         <OverlayViewF
+      position={{lat:destination.lat,lng:destination.lng}}
+      mapPaneName={OverlayViewF.OVERLAY_MOUSE_TARGET}>  
+        <div className="overlayblock">
+      <p>{source.label}</p>
+        </div>
+      </OverlayViewF>
+      </MarkerF>
+        :null}
+      {destination.length!=[]?<MarkerF
+      position={{lat:destination.lat,lng:destination.lng}}
+      icon={{
+        url:"/source.svg",
+        scaledSize:{
+          width:40,
+          height:40,
+        }
+      }}
+      >
+      <OverlayViewF
+      position={{lat:destination.lat,lng:destination.lng}}
+      mapPaneName={OverlayViewF.OVERLAY_MOUSE_TARGET}>  
+        <div className="overlayblock">
+      <p>{destination.label}</p>
+        </div>
+      </OverlayViewF>
+      </MarkerF>:null}
+    
+    <DirectionsRenderer
+    directions={directionRoutePoints}
+    options={{
+      polylineOptions:{
+        strokeColor: '#2169db',
+        strokeWeight: 3,
+      
+      },
+      suppressMarkers:true
+    }}
+    />
     </GoogleMap>
-  ) : <></>;
+  ) 
+
 }
 
 export default GoogleMapSection;

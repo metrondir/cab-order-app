@@ -6,15 +6,6 @@ import swal from 'sweetalert';
 import axios from 'axios';
 
 
-// password regex
-// ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$
-// At least one upper case English letter, (?=.*?[A-Z])
-// At least one lower case English letter, (?=.*?[a-z])
-// At least one digit, (?=.*?[0-9])
-// At least one special character, (?=.*?[#?!@$%^&*-])
-// Minimum eight in length .{8,} (with the anchors)
-
-
 const SignUp = ({ handleResponse }) => {
 	const navigate = useNavigate();
     const [error, setError] = useState({})
@@ -52,6 +43,7 @@ const SignUp = ({ handleResponse }) => {
         let { name, value } = e.target;
         hanldeValidation(name, value)
         handleEmailError(name, value)
+        
         let isPassValid = true;
         if (name === 'user_type') {
             // Capture user_type value
@@ -143,7 +135,7 @@ const SignUp = ({ handleResponse }) => {
                 {loading ? <Spinner animation="border" variant="info" /> : "Sign Up"}
             </button>
 
-            <div className="password-validatity mx-auto">
+            <div className="password-validatity mx-auto" s>
 
                 <div style={emailError.emailError ? { color: "green" } : { color: "red" }}>
                     <p>{passwordValidation.numeric ? <FaCheck /> : <FaTimes />}

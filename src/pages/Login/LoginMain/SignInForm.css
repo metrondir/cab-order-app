@@ -224,6 +224,7 @@
 	padding: 0.7rem 0;
  }
  
+
  .iBtn.transparent {
 	margin: 0;
 	background:none;
@@ -404,6 +405,7 @@
  }
  
  @media (max-width: 570px) {
+	
 	form {
 	  padding: 0 1.5rem;
 	}
@@ -473,3 +475,8 @@
 .dropdown:active{
 	border: 0px solid transparent;
 }
+select{
+	appearance:none;
+   outline:none;
+
+ }
