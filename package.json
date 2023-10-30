@@ -27,7 +27,6 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "^5.0.1",
     "sweetalert": "^2.1.2",
-    "tailwindcss": "^2.3.5",
     "web-vitals": "^2.1.4"
   },
   "browser": {
