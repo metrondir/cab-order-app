@@ -20,11 +20,12 @@ const [destination,setDestination]=useState([])
 		googleMapsApiKey={process.env.REACT_APP_NEXT_PUBLIC_API_KEY}>
 <Header/>
 	 <div className='homeDiv'>
-		
 		<div>
 			<SearchSection/>
 		</div>
-		<div className='googleMap'>
+		<div classN
+		
+		ame='googleMap'>
       <GoogleMapSection/>
 		</div>
 	 </div>

@@ -9,13 +9,14 @@ const SignUp = ({ handleResponse }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
-    displayName: '',
+    username: '',
     email: '',
     password: '',
     user_type: '',
   });
 
   const [validation, setValidation] = useState({
+    username: true,
     emailError: true,
     carLength: true,
     specialChar: true,
@@ -34,7 +35,7 @@ const SignUp = ({ handleResponse }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
-
+    const isUsernameValid= /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.username);
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.email);
     const isPasswordValid =
       user.password.length >= 8 &&
@@ -44,6 +45,7 @@ const SignUp = ({ handleResponse }) => {
     const isUserTypeValid = user.user_type === 'customer' || user.user_type === 'driver';
 
     setValidation({
+      usernameError: isUsernameValid,
       emailError: isEmailValid,
       carLength: isPasswordValid,
       specialChar: isPasswordValid,
@@ -52,22 +54,22 @@ const SignUp = ({ handleResponse }) => {
       userType: isUserTypeValid,
     });
 
-    if (isEmailValid && isPasswordValid && isUserTypeValid) {
+    if (isUsernameValid && isEmailValid && isPasswordValid && isUserTypeValid) {
       setLoading(true);
 
       const registerInfo = {
-        name: user.displayName,
+        name: user.username,
         email: user.email,
         password: user.password,
         user_type: user.user_type,
       };
 
       try {
-        // Register With node-server & mongodb
         const response = await axios.post(
           process.env.REACT_APP_BASE_SERVER_URL + '/user/register',
           registerInfo
         );
+        console.log(response);
 
         setLoading(false);
         swal({
@@ -98,9 +100,9 @@ const SignUp = ({ handleResponse }) => {
         </span>
         <input
           placeholder="Enter Your Full Name"
-          name="displayName"
+          name="username"
           type="text"
-          value={user.displayName}
+          value={user.username}
           onChange={handleOnChange}
         />
       </div>
@@ -111,7 +113,6 @@ const SignUp = ({ handleResponse }) => {
         <input
           placeholder="Enter Your Email"
           name="email"
-          type="email"
           autoComplete="username"
           value={user.email}
           onChange={handleOnChange}
@@ -135,7 +136,6 @@ const SignUp = ({ handleResponse }) => {
           <FaAddressBook />
         </span>
         <select
-          required
           name="user_type"
           className="dropdown"
           onChange={handleOnChange}
@@ -150,6 +150,14 @@ const SignUp = ({ handleResponse }) => {
       </div>
       {formSubmitted && (
         <div className="password-validatity mx-auto">
+           {!validation.usernameError && (
+            <div style={{ color: validation.usernameError ? 'green' : 'red' }}>
+              <p>
+                {validation.usernameError ? <FaCheck /> : <FaTimes />}
+                Must Have Valid Username.
+              </p>
+            </div>
+          )}
           {!validation.emailError && (
             <div style={{ color: validation.emailError ? 'green' : 'red' }}>
               <p>
@@ -208,6 +216,7 @@ const SignUp = ({ handleResponse }) => {
           className="btn btn-primary btn-block mt-2 iBtn"
           disabled={
             (
+              !validation.usernameError&&
               !validation.carLength &&
               !validation.numeric &&
               !validation.upperLowerCase &&

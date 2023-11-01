@@ -7,7 +7,7 @@ import './Home.css'
 function GoogleMapSection() {
   const containerStyle = {
     width: '100%',
-    height: window.innerWidth * 0.4,
+    height: window.innerWidth * 0.37,
   };
   const google = window.google
 	const{source,setSource}=useContext(SourceContext);
