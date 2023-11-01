@@ -5,6 +5,10 @@
 	overflow: hidden;
 	font-family: 'Poppins', sans-serif;
  }
+ body {
+	margin: 0;
+	padding: 0;
+ }
  
  .pageCloseBtn {
 	position: absolute;
@@ -470,7 +474,9 @@
 .dropdown option {
 	background-color: #fff;
 }
-
+.text-warning{
+	color: red;
+}
 
 .dropdown:active{
 	border: 0px solid transparent;

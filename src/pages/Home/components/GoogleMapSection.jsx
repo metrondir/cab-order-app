@@ -1,28 +1,38 @@
 import React, { useEffect, useState , useContext} from 'react';
-import { GoogleMap, useJsApiLoader, MarkerF, OverlayViewF, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap,  MarkerF, OverlayViewF, DirectionsRenderer } from '@react-google-maps/api';
 import { SourceContext } from '../../Context/SourceContext';
 import { DestinationContext } from '../../Context/DestinationContext';
 import './Home.css'
+
 function GoogleMapSection() {
   const containerStyle = {
     width: '100%',
     height: window.innerWidth * 0.4,
   };
   const google = window.google
-  //const { isLoaded } = useJsApiLoader({
-  //  id: 'google-map-script',
-  //  googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY, // Replace with your Google Maps API key
-  //});
 	const{source,setSource}=useContext(SourceContext);
 	const{destination,setDestination}=useContext(DestinationContext);
   const [directionRoutePoints,setDirectionRoutePoints]=useState();
-
-  const [center, setCenter] = useState({
-    lat: -3.745,
-    lng: -38.523
-  });
   const [map, setMap] = React.useState(null);
-  const [myLocationMarker, setMyLocationMarker] = useState(null);
+  const [center, setCenter] = useState();
+  useEffect(() => {
+    // Get the user's location using the Geolocation API
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const userLocation = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        setCenter(userLocation);
+        const initialZoom = 16;
+        if (map) {
+          map.setCenter(userLocation);
+          map.setZoom(initialZoom);
+        }
+      });
+    }
+  }, [map]);
+
   useEffect(()=>{
     if(source?.length!=[]&&map)
     {
@@ -64,9 +74,9 @@ function GoogleMapSection() {
         setDirectionRoutePoints(result);
        
       } else if (status === google.maps.DirectionsStatus.ZERO_RESULTS) {
-        console.error('No driving directions available for this route.');
+        //console.error('No driving directions available for this route.');
       } else {
-        console.error('Error:', status);
+        //console.error('Error:', status);
       } 
     });
   };
@@ -74,10 +84,8 @@ function GoogleMapSection() {
     const bounds = new google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
     setMap(map);
-
-    // Add event listener to disable Ctrl + scroll for zoom
     map.setOptions({
-      gestureHandling: 'greedy',
+    gestureHandling: 'greedy',
 		
     });
   }, []);
@@ -89,7 +97,7 @@ function GoogleMapSection() {
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={center || { lat: -3.745, lng: -38.523 }} // Fallback to a default location if user location not available
+      center={center || { lat: -3.745, lng: -38.523 }} 
       zoom={7}
       onLoad={map=>setMap(map)}
       onUnmount={onUnmount}
@@ -140,7 +148,6 @@ function GoogleMapSection() {
       polylineOptions:{
         strokeColor: '#2169db',
         strokeWeight: 3,
-      
       },
       suppressMarkers:true
     }}

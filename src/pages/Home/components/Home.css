@@ -8,3 +8,43 @@
 	color: black;
 	font-size: 16px;
 }
+.inputMainDiv{
+	background-color: rgb(226 232 240);
+	padding: 0.75rem; border-radius: 1rem; margin-top: 0.75rem; display: flex; align-items: center; gap: 1rem;
+}
+.googleautocomplete{
+	width: 100%;
+}
+.homeDiv{
+	padding: 1.5rem;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-columns: repeat(3,minmax(0,1fr));
+	gap:1.25rem
+}
+.googleMap{
+	grid-column: span 2;
+}
+.searchSection{
+	padding: 0.5rem; /* Equivalent to p-2 in Tailwind CSS */
+	border: 2px solid #000; /* Equivalent to border-[2px] in Tailwind CSS */
+	border-radius: 0.5rem; 
+}
+.headingSection{
+	font-size: 20px; /* Equivalent to text-[20px] in Tailwind CSS */
+	font-weight: bold;
+}
+.buttonSearch{
+	padding: 0.75rem; /* Equivalent to p-3 in Tailwind CSS */
+  background-color: #000; /* Equivalent to bg-black in Tailwind CSS */
+  color: #fff; /* Equivalent to text-white in Tailwind CSS */
+  width: 100%;
+  margin-top: 1.25rem; /* Equivalent to mt-5 in Tailwind CSS */
+  border-radius: 0.5rem; 
+}
+.headerbloc{
+	padding: 1.25rem; /* p-5 */
+	padding-bottom: 0.75rem; /* pb-3 */
+	padding-left: 2.5rem; /* pl-10 */
+	border-bottom: 4px solid #e5e5e5;
+}

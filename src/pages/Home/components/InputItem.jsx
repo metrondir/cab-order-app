@@ -12,12 +12,13 @@ function InputItem({type}) {
 	const{destination,setDestination}=useContext(DestinationContext);
 
 	useEffect(()=>{
-		type=='source'
+		type==='source'
 		?setPlaceholder('Pickup Location')
 		:setPlaceholder('Dropoff Location')
 	},[type]);
 
 	const getLatAndLng=(place,type) =>{
+		if (place && place.value && place.value.place_id) {
 	const placeId=place.value.place_id;
 	const service= new window.google.maps.places.PlacesService(document.createElement('div'));
 	service.getDetails({placeId},(place,status)=>{
@@ -28,7 +29,7 @@ function InputItem({type}) {
 					lat: place.geometry.location.lat(),
 					lng:place.geometry.location.lng(),
 					name:place.formatted_address,
-					label:place.name
+					label:place.name,
 				})
 			}
 			else{
@@ -41,18 +42,17 @@ function InputItem({type}) {
 			}
 		}
 	})
-	}
+}}
+
   return (
-	
-	 <div className='bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4'>
+	 <div className='inputMainDiv'>
 		<GooglePlacesAutocomplete
-		
 		selectProps={{
 			value,
 			onChange: (place)=>{getLatAndLng(place,type);setValue(place)},
-			placeholder:'Pickup Location',
+			placeholder: placeholder,
 			isClearable: true,
-			className:'w-full',
+			className:'googleautocomplete',
 			components:{
 				DropdownIndicator:false
 			},
@@ -63,10 +63,8 @@ function InputItem({type}) {
 				  border: 'none'
 				}),
 			}
-			
 		}}
 		/>
-	 
 	 </div>
   )
 }

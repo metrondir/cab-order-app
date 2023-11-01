@@ -4,6 +4,7 @@ import { SourceContext } from '../Context/SourceContext'
 import GoogleMapSection from './components/GoogleMapSection'
 import SearchSection from './components/SearchSection'
 import { DestinationContext } from '../Context/DestinationContext'
+import  Header  from './components/Header'
 import { LoadScript } from '@react-google-maps/api'
 
 
@@ -17,12 +18,14 @@ const [destination,setDestination]=useState([])
 		
 		libraries={['places']}
 		googleMapsApiKey={process.env.REACT_APP_NEXT_PUBLIC_API_KEY}>
-	 <div className='p-6 grid grid-cols-1 md:grid-cols-3 gap-5'>
+<Header/>
+	 <div className='homeDiv'>
+		
 		<div>
 			<SearchSection/>
 		</div>
-		<div className='col-span-2'>
-      <GoogleMapSection />
+		<div className='googleMap'>
+      <GoogleMapSection/>
 		</div>
 	 </div>
 	 </LoadScript>

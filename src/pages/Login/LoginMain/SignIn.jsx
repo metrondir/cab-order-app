@@ -1,34 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { useForm } from "react-hook-form";
 import Spinner from 'react-bootstrap/Spinner';
 import axios from 'axios';
-import { useContext } from 'react';
 import { AuthContext } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-
 
 const SignIn = ({ handleResponse }) => {
 	const { loading, error, dispatch } = useContext(AuthContext);
 	const { register, handleSubmit,  formState: { errors } } = useForm();
 	const navigate = useNavigate();
-
-
 	const [show, setShow] = useState(true);
-
 	setTimeout(() => {
 		 setShow(false);
-	}, 10000)
+	}, 5000)
 
 	const onSubmit = async (event) => {
 		 dispatch({ type: "LOGIN_START" })
 		 try {
 			  const res = await axios.post(process.env.REACT_APP_BASE_SERVER_URL+'/user/login', event);
-			  const accessToken = res.data.accessToken;
-			  const refreshToken = res.data.refreshToken;
-			  console.log(accessToken);
-			  console.log(refreshToken);
 			  dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details })
 			  swal({
 					icon: 'success',
