@@ -6,7 +6,7 @@ import SearchSection from './components/SearchSection'
 import { DestinationContext } from '../Context/DestinationContext'
 import  Header  from './components/Header'
 import { LoadScript } from '@react-google-maps/api'
-
+import './components/Home.css'
 
 function Home() {
 const [source,setSource]=useState([])
@@ -20,12 +20,10 @@ const [destination,setDestination]=useState([])
 		googleMapsApiKey={process.env.REACT_APP_NEXT_PUBLIC_API_KEY}>
 <Header/>
 	 <div className='homeDiv'>
-		<div>
+		<div className='sectionDiv'>
 			<SearchSection/>
 		</div>
-		<div classN
-		
-		ame='googleMap'>
+		<div className='googleMap'>
       <GoogleMapSection/>
 		</div>
 	 </div>

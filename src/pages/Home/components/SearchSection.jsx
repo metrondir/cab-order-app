@@ -8,8 +8,8 @@ function SearchSection() {
   return (
 	 <div className='searchSection'>
 		<p className='headingSection'>Get a ride</p>
-		<InputItem type='source' />
-		<InputItem type='destination' />	 
+		<InputItem type='source' className='inputItem' />
+		<InputItem type='destination' className='inputItem' />	 
 	 <button className='buttonSearch'>Search</button>
 	 </div>
   )
