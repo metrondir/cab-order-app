@@ -91,3 +91,54 @@
 	  align-items: flex-start;
 	}
  }
+ .carListContainer {
+	overflow: auto;
+	padding: 1.4rem;
+	height: 250px;
+ }
+ 
+ .carListTitle {
+	font-size: 22px;
+	font-weight: bold;
+ }
+ 
+ .carListItem {
+	cursor: pointer;
+	padding: 2rem 4rem;
+	border-radius: 1rem;
+	border: 1px solid black;
+ }
+ 
+ .carListItemActive {
+	border-width: 3px;
+ }
+
+
+ .carListItemContainer {
+	display: flex;
+	justify-content: space-between;
+ }
+ 
+ .carListItemDetails {
+	display: flex;
+	align-items: center;
+ }
+ 
+ .carListItemName {
+	font-weight: bold;
+	font-size: 18px;
+	display: flex;
+	align-items: center;
+ }
+ 
+ .carListItemSeat {
+	margin-left: 10px;
+	font-weight: normal;
+	font-size: 14px;
+	align-items: center;
+ }
+ 
+ .carListItemAmount {
+	font-size: 18px;
+	font-weight: bold;
+ }
